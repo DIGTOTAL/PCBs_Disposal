@@ -1,8 +1,9 @@
-package Scince.PCD.Service;
+package Scince.Service;
 
-import Scince.PCD.Repository.Element;
-import Scince.PCD.Repository.ElementRepository;
+import Scince.Repository.Element;
+import Scince.Repository.ElementRepository;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ElementService {
         return elementRepository.findAll();
     }
 
-    public Element create(Element element) {
+    public Element create(@NotNull Element element) {
         Optional<Element> existingElement = elementRepository.findByName(element.getName());
         if (existingElement.isPresent()) {
             throw new IllegalArgumentException("Element with name: " + element.getName() + " already exists.");
@@ -50,5 +51,9 @@ public class ElementService {
         }
         element.setAtomicMass(atomicMass);
         elementRepository.save(element);
+    }
+
+    public double getAtomicMassById(int id){
+       return elementRepository.getAtomicMassById(id);
     }
 }

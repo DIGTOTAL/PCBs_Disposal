@@ -1,4 +1,4 @@
-package Scince.PCD.Repository;
+package Scince.Repository;
 
 import jakarta.persistence.*;
 

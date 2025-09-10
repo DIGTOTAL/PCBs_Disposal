@@ -1,8 +1,8 @@
-package Scince.PCD.Controller;
+package Scince.Controller;
 
-import Scince.PCD.Repository.Element;
-import Scince.PCD.Repository.ElementRepository;
-import Scince.PCD.Service.ElementService;
+import Scince.Repository.Element;
+import Scince.Repository.ElementRepository;
+import Scince.Service.ElementService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
