@@ -1,8 +1,6 @@
-// src/main/java/Scince/Controller/CompositionController.java
 package Scince.Controller;
 
 import Scince.Repository.Composition;
-import Scince.Repository.Element;
 import Scince.Service.CompositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +21,7 @@ public class CompositionController {
         return compositionService.findAll();
     }
 
-    @PostMapping("/calculate-compositions")
+    @PostMapping("/calculate")
     public void calculateCompositions() {
         compositionService.calculateComposition();
     }

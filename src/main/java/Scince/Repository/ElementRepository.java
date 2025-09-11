@@ -10,6 +10,6 @@ public interface ElementRepository extends JpaRepository<Element, Integer> {
 
     Optional<Element> findByName(String name);
 
-    @Query (value = "select atomic_mass from elements where id = :id", nativeQuery = true)
-    Double getAtomicMassById(@Param("id")int id);
+    @Query(value = "select atomic_mass from elements where id = :id", nativeQuery = true)
+    Double getAtomicMassById(@Param("id") int id);
 }

@@ -8,23 +8,37 @@ public class Composition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+    @Column(name = "concentration_of_sovtol_and_wwt")
     private double concentrationOfSovtolAndWWT;
+    @Column(name = "concentration_of_sovtol")
     private double concentrationOfSovtol;
+    @Column(name = "concentration_of_wwt")
     private double concentrationOfWWT;
+    @Column(name = "concentration_of_acetone")
     private double concentrationOfAcetone;
+    @Column(name = "concentration_of_fe")
     private double concentrationOfFe;
+    @Column(name = "concentration_of_mn")
     private double concentrationOfMn;
+    @Column(name = "concentration_of_si")
     private double concentrationOfSi;
+    @Column(name = "concentration_of_ca")
     private double concentrationOfCa;
+    @Column(name = "concentration_of_mg")
     private double concentrationOfMg;
+    @Column(name = "concentration_of_al")
     private double concentrationOfAl;
+    @Column(name = "concentration_of_cu")
     private double concentrationOfCu;
+    @Column(name = "concentration_of_water")
     private double concentrationOfWater;
+    @Column(name = "concentration_of_non_burning_elements")
     private double concentrationOfNonBurningElements;
-    private double loverHeatingValueOfComposition;
+    @Column(name = "lower_heating_value_of_composition")
+    private double lowerHeatingValueOfComposition;
 
-    public Composition(int id, double concentrationOfSovtolAndWWT, double concentrationOfSovtol, double concentrationOfWWT, double concentrationOfAcetone, double concentrationOfFe, double concentrationOfMn, double concentrationOfSi, double concentrationOfCa, double concentrationOfMg, double concentrationOfAl, double concentrationOfCu, double concentrationOfWater, double concentrationOfNonBurningElements, double loverHeatingValueOfComposition) {
+    public Composition(long id, double concentrationOfSovtolAndWWT, double concentrationOfSovtol, double concentrationOfWWT, double concentrationOfAcetone, double concentrationOfFe, double concentrationOfMn, double concentrationOfSi, double concentrationOfCa, double concentrationOfMg, double concentrationOfAl, double concentrationOfCu, double concentrationOfWater, double concentrationOfNonBurningElements, double lowerHeatingValueOfComposition) {
         this.id = id;
         this.concentrationOfSovtolAndWWT = concentrationOfSovtolAndWWT;
         this.concentrationOfSovtol = concentrationOfSovtol;
@@ -39,18 +53,18 @@ public class Composition {
         this.concentrationOfCu = concentrationOfCu;
         this.concentrationOfWater = concentrationOfWater;
         this.concentrationOfNonBurningElements = concentrationOfNonBurningElements;
-        this.loverHeatingValueOfComposition = loverHeatingValueOfComposition;
+        this.lowerHeatingValueOfComposition = lowerHeatingValueOfComposition;
     }
 
     public Composition() {
 
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -159,10 +173,10 @@ public class Composition {
     }
 
     public double getLowerHeatingValueOfComposition() {
-        return loverHeatingValueOfComposition;
+        return lowerHeatingValueOfComposition;
     }
 
-    public void setLowerHeatingValueOfComposition(double loverHeatingValueOfComposition) {
-        this.loverHeatingValueOfComposition = loverHeatingValueOfComposition;
+    public void setLowerHeatingValueOfComposition(double lowerHeatingValueOfComposition) {
+        this.lowerHeatingValueOfComposition = lowerHeatingValueOfComposition;
     }
 }

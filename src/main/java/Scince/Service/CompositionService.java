@@ -2,11 +2,12 @@ package Scince.Service;
 
 import Scince.Repository.Composition;
 import Scince.Repository.CompositionRepository;
-import Scince.Repository.Element;
 import Scince.Repository.ElementRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,9 +25,6 @@ public class CompositionService {
         this.elementRepository = elementRepository;
     }
 
-    public static double getLowerHeatingValueOfAcetone() {
-        return lowerHeatingValueOfAcetone;
-    }
 
     private double lowerHeatingValueOfTCB() {
         double massConcetrationOfCarbon = 6 * elementRepository.getAtomicMassById(6) /
@@ -59,73 +57,92 @@ public class CompositionService {
         return lowerHeatingValueOfSovtol10;
     }
 
+    @Transactional
     public void calculateComposition() {
-        double initialConcentrationOfFe = 0.303;
-        double initialConcentrationOfMn = 0.045;
-        double initialConcentrationOfSi = 0.04;
-        double initialConcentrationOfCa = 0.01;
-        double initialConcentrationOfMg = 0.0026;
-        double initialConcentrationOfAl = 0.001;
-        double initialConcentrationOfCu = 0.0005;
-        double initialConcentrationOfWater = 0.5979;
+        compositionRepository.deleteAllInBatch();
+        lowerHeatingValueOfSovtol10();
+        final double initialConcentrationOfFe = 0.303;
+        final double initialConcentrationOfMn = 0.045;
+        final double initialConcentrationOfSi = 0.04;
+        final double initialConcentrationOfCa = 0.01;
+        final double initialConcentrationOfMg = 0.0026;
+        final double initialConcentrationOfAl = 0.001;
+        final double initialConcentrationOfCu = 0.0005;
+        final double initialConcentrationOfWater = 0.5979;
+        final int BATCH_SIZE = 100;
 
-
-        for (double i = 1; i >= 0; i -= 0.05) {
-            for (double j = 0; j <= 1; j += 0.05) {
-                for (double k = 0; k <= 1; k += 0.05) {
+        List<Composition> batch = new ArrayList<>(BATCH_SIZE);
+        int counter = 0;
+        for (double i = 0.0; i <= 1; i += 0.05) {
+            for (double j = 1.0; j >= 0; j -= 0.05) {
+                for (double k = 0.0; k <= 1; k += 0.05) {
 
                     Composition composition = new Composition();
 
-                    composition.setConcentrationOfSovtolAndWWT(i);
-                    double concentrationOfSovtolAndWWT = composition.getConcentrationOfSovtolAndWWT();
+                    composition.setConcentrationOfSovtolAndWWT(j);
+                    composition.setConcentrationOfSovtol(k);
 
-                    composition.setConcentrationOfSovtol(j);
-                    double concentrationOfSovtol = composition.getConcentrationOfSovtol();
-                    composition.setConcentrationOfWWT(1 - j);
-                    double concentrationOfWWT = composition.getConcentrationOfWWT();
-                    
-                    composition.setConcentrationOfAcetone(k);
-                    double concentrationOfAcetone = composition.getConcentrationOfAcetone();
+                    double concentrationOfWWT = 1 - k;
+                    composition.setConcentrationOfWWT(concentrationOfWWT);
 
-                    composition.setConcentrationOfFe(initialConcentrationOfFe*concentrationOfWWT*concentrationOfSovtolAndWWT);
-                    double concentrationOfFe = composition.getConcentrationOfFe();
+                    composition.setConcentrationOfSovtol(k);
 
-                    composition.setConcentrationOfMn(initialConcentrationOfMn*concentrationOfWWT*concentrationOfSovtolAndWWT);
-                    double concentrationOfMn = composition.getConcentrationOfMn();
+                    double concentrationOfAcetone = 1 - j;
+                    composition.setConcentrationOfAcetone(concentrationOfAcetone);
 
-                    composition.setConcentrationOfSi(initialConcentrationOfSi*concentrationOfWWT*concentrationOfSovtolAndWWT);
-                    double concentrationOfSi = composition.getConcentrationOfSi();
+                    double concentrationOfFe = initialConcentrationOfFe * concentrationOfWWT * j;
+                    composition.setConcentrationOfFe(concentrationOfFe);
 
-                    composition.setConcentrationOfCa(initialConcentrationOfCa*concentrationOfWWT*concentrationOfSovtolAndWWT);
-                    double concentrationOfCa = composition.getConcentrationOfCa();
+                    double concentrationOfMn = initialConcentrationOfMn * concentrationOfWWT * j;
+                    composition.setConcentrationOfMn(concentrationOfMn);
 
-                    composition.setConcentrationOfMg(initialConcentrationOfMg*concentrationOfWWT*concentrationOfSovtolAndWWT);
-                    double concentrationOfMg = composition.getConcentrationOfMg();
+                    double concentrationOfSi = initialConcentrationOfSi * concentrationOfWWT * j;
+                    composition.setConcentrationOfSi(concentrationOfSi);
 
-                    composition.setConcentrationOfAl(initialConcentrationOfAl*concentrationOfWWT*concentrationOfSovtolAndWWT);
-                    double concentrationOfAl = composition.getConcentrationOfAl();
+                    double concentrationOfCa = initialConcentrationOfCa * concentrationOfWWT * j;
+                    composition.setConcentrationOfCa(concentrationOfCa);
 
-                    composition.setConcentrationOfCu(initialConcentrationOfCu*concentrationOfWWT*concentrationOfSovtolAndWWT);
-                    double concentrationOfCu = composition.getConcentrationOfCu();
 
-                    composition.setConcentrationOfWater(initialConcentrationOfWater*concentrationOfWWT*concentrationOfSovtolAndWWT);
-                    double concentrationOfWater = composition.getConcentrationOfWater();
+                    double concentrationOfMg = initialConcentrationOfMg * concentrationOfWWT * j;
+                    composition.setConcentrationOfMg(concentrationOfMg);
 
-                    composition.setConcentrationOfNonBurningElements(concentrationOfFe+concentrationOfMn+concentrationOfSi+
-                            concentrationOfCa+concentrationOfMg+concentrationOfAl+concentrationOfCu);
-                    double concentrationOfNonBurningElements = composition.getConcentrationOfNonBurningElements();
+                    double concentrationOfAl = initialConcentrationOfAl * concentrationOfWWT * j;
+                    composition.setConcentrationOfAl(concentrationOfAl);
 
-                    composition.setLowerHeatingValueOfComposition(((1-concentrationOfNonBurningElements-concentrationOfWater)*lowerHeatingValueOfSovtol10-2.5*concentrationOfWater)*
-                            concentrationOfSovtolAndWWT+lowerHeatingValueOfAcetone*concentrationOfAcetone);
+                    double concentrationOfCu = initialConcentrationOfCu * concentrationOfWWT * j;
+                    composition.setConcentrationOfCu(concentrationOfCu);
 
-                    compositionRepository.save(composition);
+                    double concentrationOfWater = initialConcentrationOfWater * concentrationOfWWT * j;
+                    composition.setConcentrationOfWater(concentrationOfWater);
+
+                    double concentrationOfNonBurningElements = concentrationOfFe + concentrationOfMn + concentrationOfSi +
+                            concentrationOfCa + concentrationOfMg + concentrationOfAl + concentrationOfCu;
+                    composition.setConcentrationOfNonBurningElements(concentrationOfNonBurningElements);
+
+                    double lowerHeatingValueOfComposition = k * lowerHeatingValueOfSovtol10 - 2.5 * concentrationOfWater +
+                            concentrationOfAcetone * lowerHeatingValueOfAcetone;
+
+                    composition.setLowerHeatingValueOfComposition(lowerHeatingValueOfComposition);
+
+                    batch.add(composition);
+                    counter++;
+                    if (counter % BATCH_SIZE == 0) {
+                        compositionRepository.saveAll(batch);
+                        compositionRepository.flush();
+                        batch.clear();
+                    }
                 }
             }
+        }
+        if (!batch.isEmpty()) {
+            compositionRepository.saveAll(batch);
+            compositionRepository.flush();
+            batch.clear();
         }
     }
 
     public List<Composition> findAll() {
-            return compositionRepository.findAll();
-        }
+        return compositionRepository.findAll();
     }
+}
 

@@ -53,7 +53,7 @@ public class ElementService {
         elementRepository.save(element);
     }
 
-    public double getAtomicMassById(int id){
-       return elementRepository.getAtomicMassById(id);
+    public double getAtomicMassById(int id) {
+        return elementRepository.getAtomicMassById(id);
     }
 }
