@@ -1,14 +1,16 @@
-package Scince.Repository;
+package scince.repository;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "compositions")
+@Table(name = "compositions", indexes = {
+        @Index(name = "idx_lower_heating_value", columnList = "lower_heating_value_of_composition")
+})
 public class Composition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Column(name = "concentration_of_sovtol_and_wwt")
     private double concentrationOfSovtolAndWWT;
     @Column(name = "concentration_of_sovtol")
@@ -38,7 +40,7 @@ public class Composition {
     @Column(name = "lower_heating_value_of_composition")
     private double lowerHeatingValueOfComposition;
 
-    public Composition(long id, double concentrationOfSovtolAndWWT, double concentrationOfSovtol, double concentrationOfWWT, double concentrationOfAcetone, double concentrationOfFe, double concentrationOfMn, double concentrationOfSi, double concentrationOfCa, double concentrationOfMg, double concentrationOfAl, double concentrationOfCu, double concentrationOfWater, double concentrationOfNonBurningElements, double lowerHeatingValueOfComposition) {
+    public Composition(Integer id, double concentrationOfSovtolAndWWT, double concentrationOfSovtol, double concentrationOfWWT, double concentrationOfAcetone, double concentrationOfFe, double concentrationOfMn, double concentrationOfSi, double concentrationOfCa, double concentrationOfMg, double concentrationOfAl, double concentrationOfCu, double concentrationOfWater, double concentrationOfNonBurningElements, double lowerHeatingValueOfComposition) {
         this.id = id;
         this.concentrationOfSovtolAndWWT = concentrationOfSovtolAndWWT;
         this.concentrationOfSovtol = concentrationOfSovtol;
@@ -60,11 +62,11 @@ public class Composition {
 
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

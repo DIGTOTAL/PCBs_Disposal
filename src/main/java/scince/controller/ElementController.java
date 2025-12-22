@@ -1,8 +1,8 @@
-package Scince.Controller;
+package scince.controller;
 
-import Scince.Repository.Element;
-import Scince.Repository.ElementRepository;
-import Scince.Service.ElementService;
+import scince.repository.Element;
+import scince.repository.ElementRepository;
+import scince.service.ElementService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +12,9 @@ import java.util.List;
 public class ElementController {
 
     private final ElementService elementService;
-    private final ElementRepository elementRepository;
 
-    public ElementController(ElementService elementService, ElementRepository elementRepository) {
+    public ElementController(ElementService elementService) {
         this.elementService = elementService;
-        this.elementRepository = elementRepository;
     }
 
     @GetMapping
@@ -35,8 +33,7 @@ public class ElementController {
     }
 
     @PutMapping(path = "{id}")
-    public Element update(@PathVariable int id, @RequestParam String atomicMass) {
-        elementService.update(id, Double.valueOf(atomicMass));
-        return null;
+    public Element update(@PathVariable int id, @RequestParam Double atomicMass) {
+       return elementService.update(id, atomicMass);
     }
 }

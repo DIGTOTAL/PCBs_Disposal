@@ -1,4 +1,4 @@
-package Scince.Repository;
+package scince.repository;
 
 import jakarta.persistence.*;
 
@@ -8,12 +8,12 @@ public class Element {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String name;
     @Column(name = "atomic_mass")
     private Double atomicMass;
 
-    public Element(int id, Double atomicMass, String name) {
+    public Element(Integer id, Double atomicMass, String name) {
         this.id = id;
         this.atomicMass = atomicMass;
         this.name = name;
@@ -22,11 +22,11 @@ public class Element {
     public Element() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

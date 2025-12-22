@@ -1,7 +1,7 @@
-package Scince.Service;
+package scince.service;
 
-import Scince.Repository.Element;
-import Scince.Repository.ElementRepository;
+import scince.repository.Element;
+import scince.repository.ElementRepository;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -38,22 +38,15 @@ public class ElementService {
     }
 
     @Transactional
-    public void update(int id, Double atomicMass) {
-        Optional<Element> existingElement = elementRepository.findById(id);
-        if (existingElement.isEmpty()) {
-            throw new IllegalArgumentException("Element with id: " + id + " already exists.");
-        }
-
-        Element element = existingElement.get();
+    public Element update(Integer id, Double atomicMass) {
+        Element element = elementRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Element with id: " + id + " does not exist."));
 
         if (atomicMass != null && !atomicMass.equals(element.getAtomicMass())) {
             element.setAtomicMass(atomicMass);
+            element = elementRepository.save(element);
         }
-        element.setAtomicMass(atomicMass);
-        elementRepository.save(element);
-    }
 
-    public double getAtomicMassById(int id) {
-        return elementRepository.getAtomicMassById(id);
+        return element;
     }
 }

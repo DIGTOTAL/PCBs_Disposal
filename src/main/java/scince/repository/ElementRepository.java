@@ -1,4 +1,4 @@
-package Scince.Repository;
+package scince.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,5 +11,5 @@ public interface ElementRepository extends JpaRepository<Element, Integer> {
     Optional<Element> findByName(String name);
 
     @Query(value = "select atomic_mass from elements where id = :id", nativeQuery = true)
-    Double getAtomicMassById(@Param("id") int id);
+   Optional<Double>  getAtomicMassById(@Param("id") int id);
 }
